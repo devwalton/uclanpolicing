@@ -104,7 +104,7 @@ for ($caseNumber = 0; $caseNumber <= 100000; $caseNumber++) {
             $mapImage = imagecreatefrompng($mapImageUrl);
             if ($backgroundImage && $mapImage) {
                 imagecopy($backgroundImage, $mapImage, 0, 0, 0, 0, imagesx($mapImage), imagesy($mapImage));
-                $combinedMapFilename = 'geo/' . $location . '.jpg'; // Save to geo/location.jpg
+                $combinedMapFilename = 'https://uclanpolicing.vercel.app/case-search/geo/' . $location . '.jpg'; // Save to geo/location.jpg
                 imagejpeg($backgroundImage, $combinedMapFilename);
                 imagedestroy($backgroundImage);
                 imagedestroy($mapImage);
