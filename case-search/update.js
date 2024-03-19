@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
-    fetch('update.php')
+    fetch('https://uclanpolicing.vercel.app/update.php')
     .then(response => {
         if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log('Result from update.php:', data);
 
         // Fetch data from scrape.php
-        return fetch('scrape.php');
+        return fetch('https://uclanpolicing.vercel.app/scrape.php');
     })
     .then(response => {
         if (!response.ok) {
