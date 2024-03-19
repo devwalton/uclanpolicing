@@ -108,7 +108,7 @@ foreach ($database as &$caseInfo) {
                 $caseInfo['CaseData'] = $caseData + [
                     'CaseImages' => $caseImages,
                     'SensitiveImages' => $sensitiveImages,
-                    'CombinedMapImage' => './' . $combinedMapFilename
+                    'CombinedMapImage' => 'https://uclanpolicing.vercel.app/case-search/geo/' . $combinedMapFilename
                 ];
 
                 // Log changes to the changelog
