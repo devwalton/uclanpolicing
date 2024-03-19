@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Missing Persons Cases</title>
     <link rel="stylesheet" id="theme-style" href="https://uclanpolicing.vercel.app/case-search/dark.css">
-    <script src="update.js" defer></script>
+    <script src="https://uclanpolicing.vercel.app/case-search/update.js" defer></script>
 </head>
 <body>
 
@@ -99,7 +99,7 @@
     // Function to fetch data from the database.json file
     async function fetchData() {
         try {
-            const response = await fetch('database.json');
+            const response = await fetch('https://uclanpolicing.vercel.app/case-search/database.json');
             const data = await response.json();
             return data;
         } catch (error) {
