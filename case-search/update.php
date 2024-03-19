@@ -1,9 +1,9 @@
 <?php
 // Clear the log file
-file_put_contents('update.json', '');
+file_put_contents('https://uclanpolicing.vercel.app/update.json', '');
 
 // Read database.json content
-$databaseContent = file_get_contents('database.json');
+$databaseContent = file_get_contents('https://uclanpolicing.vercel.app/database.json');
 if ($databaseContent === false) {
     die('Error: Unable to read database.json file.');
 }
@@ -16,8 +16,8 @@ if ($database === null) {
 
 // Load existing changelog or create new
 $changelog = [];
-if (file_exists('update.json')) {
-    $changelogContent = file_get_contents('update.json');
+if (file_exists('https://uclanpolicing.vercel.app/update.json')) {
+    $changelogContent = file_get_contents('https://uclanpolicing.vercel.app/update.json');
     if ($changelogContent !== false) {
         $changelog = json_decode($changelogContent, true);
     }
@@ -99,7 +99,7 @@ foreach ($database as &$caseInfo) {
             $mapImage = imagecreatefrompng($mapImageUrl);
             if ($backgroundImage && $mapImage) {
                 imagecopy($backgroundImage, $mapImage, 0, 0, 0, 0, imagesx($mapImage), imagesy($mapImage));
-                $combinedMapFilename = 'geo/' . $location . '.jpg'; // Save to geo/location.jpg
+                $combinedMapFilename = 'https://uclanpolicing.vercel.app/geo/' . $location . '.jpg'; // Save to geo/location.jpg
                 imagejpeg($backgroundImage, $combinedMapFilename);
                 imagedestroy($backgroundImage);
                 imagedestroy($mapImage);
