@@ -116,7 +116,7 @@ for ($caseNumber = 0; $caseNumber <= 100000; $caseNumber++) {
                     'CaseData' => $caseData + [
                         'CaseImages' => $caseImages,
                         'SensitiveImages' => $sensitiveImages,
-                        'CombinedMapImage' => './' . $combinedMapFilename
+                        'CombinedMapImage' => 'https://uclanpolicing.vercel.app/case-search/geo/' . $combinedMapFilename
                     ]
                 ];
 
