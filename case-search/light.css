@@ -1,0 +1,203 @@
+body {
+	font-family: Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+	background-color: #f4f4f4;
+}
+
+.container {
+	width: 100%;
+	max-width: 1200px;
+	margin: 20px auto;
+	padding: 20px;
+	background-color: #fff;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+	text-align: center;
+	margin-bottom: 20px;
+	color: #333;
+}
+
+#filters {
+	background-color: #f9f9f9;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
+#filters h2 {
+	margin-top: 0;
+	margin-bottom: 10px;
+	color: #555;
+	width: 100%;
+}
+
+.search-section {
+	width: 100%;
+	margin-bottom: 20px;
+}
+
+.filter-category {
+	margin-bottom: 20px;
+	flex-grow: 1;
+	flex-basis: 0;
+	margin-right: 20px;
+}
+
+.filter-category h3 {
+	margin-top: 0;
+	margin-bottom: 10px;
+	color: #555;
+}
+
+.filter-item {
+	margin-bottom: 10px;
+}
+
+.filter-item label {
+	display: block;
+	margin-bottom: 5px;
+	font-weight: bold;
+	color: #777;
+}
+
+.filter-item input[type="checkbox"] {
+	margin-right: 5px;
+}
+
+.filter-item input[type="text"] {
+	width: calc(100% - 25px);
+	padding: 5px;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+}
+
+#databaseContent {
+	margin-top: 20px;
+}
+
+.case-info {
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	padding: 10px;
+	margin-bottom: 20px;
+	background-color: #f9f9f9;
+}
+
+.case-info h2 {
+	margin-top: 0;
+	margin-bottom: 10px;
+	color: #555;
+}
+
+.case-data {
+	margin-left: 20px;
+}
+
+.case-data p {
+	margin-bottom: 5px;
+	color: #777;
+}
+
+.case-data p strong {
+	color: #333;
+}
+
+a {
+	color: #007bff;
+	text-decoration: none;
+}
+
+.toggle-switch {
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	z-index: 9999;
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
+}
+
+.toggle-switch input {
+	display: none;
+}
+
+.toggle-switch-label {
+	display: inline-block;
+	width: 50px;
+	height: 25px;
+	background-color: #ccc;
+	border-radius: 25px;
+	position: relative;
+}
+
+.toggle-switch-slider {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 25px;
+	height: 25px;
+	background-color: #fff;
+	border-radius: 50%;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+	transition: transform 0.3s ease;
+}
+
+.toggle-switch input:checked+.toggle-switch-label .toggle-switch-slider {
+	transform: translateX(100%);
+}
+
+.case-info {
+	margin-bottom: 20px;
+}
+
+.case-data {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.case-data-section {
+	flex: 1 1 100%;
+	/* Adjust the width to occupy the full width */
+	margin-bottom: 20px;
+	/* Add spacing between sections */
+}
+
+.case-data-info p {
+	margin-bottom: 10px;
+}
+
+.case-data img {
+	width: 200px;
+	height: auto;
+	max-height: 200px;
+	/* Set maximum height for the images */
+	margin: 5px;
+	/* Add space between images */
+	border-radius: 8px;
+	/* Add rounded corners */
+	box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+	/* Add shadow backdrop */
+}
+
+.sensitive-images img {
+	filter: blur(20px);
+	/* Apply blur effect by default */
+	transition: filter 0.3s ease;
+	/* Add transition effect for smooth blur/unblur */
+	cursor: pointer;
+	/* Change cursor to pointer to indicate it's clickable */
+	margin: 5px;
+	/* Add space between images */
+}
+
+.sensitive-images img.unblurred {
+	filter: none;
+	/* Remove blur effect when unblurred class is applied */
+}

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Missing Persons Cases</title>
+    <link rel="stylesheet" id="theme-style" href="dark.css">
+    <script src="update.js" defer></script>
+</head>
+<body>
+
+<div class="container">
+    <h1>Case Search</h1>
+    <div id="filters">
+        <div class="search-section">
+            <h2>Search</h2>
+            <div class="filter-item">
+                <input type="text" id="searchInput" oninput="applyFilters()" placeholder="Search..." style="width: 100%;">
+                <label><input type="checkbox" id="exactMatchCheckbox" onchange="applyFilters()"> Exact Match</label>
+            </div>
+        </div>
+        <div class="filter-category">
+            <h3>Case Data</h3>
+            <div class="filter-item">
+                <label><input type="checkbox" id="caseNumberFilter" onchange="applyFilters()"> Case Number:</label>
+                <input type="text" id="caseNumberInput" oninput="applyFilters()">
+            </div>
+            <div class="filter-item">
+                <label><input type="checkbox" id="dateFoundFilter" onchange="applyFilters()"> Date Found:</label>
+                <input type="text" id="dateFoundInput" oninput="applyFilters()">
+            </div>
+            <div class="filter-item">
+                <label><input type="checkbox" id="bodyRemainsFilter" onchange="applyFilters()"> Body or Remains:</label>
+                <input type="text" id="bodyRemainsInput" oninput="applyFilters()">
+            </div>
+        </div>
+        <div class="filter-category">
+            <h3>Physical Appearance</h3>
+            <div class="filter-item">
+                <label><input type="checkbox" id="genderFilter" onchange="applyFilters()"> Gender:</label>
+                <input type="text" id="genderInput" oninput="applyFilters()">
+            </div>
+            <div class="filter-item">
+                <label><input type="checkbox" id="ageRangeFilter" onchange="applyFilters()"> Age Range:</label>
+                <input type="text" id="ageRangeInput" oninput="applyFilters()">
+            </div>
+            <div class="filter-item">
+    <label><input type="checkbox" id="ethnicityFilter" onchange="applyFilters()"> Ethnicity:</label>
+    <input type="text" id="ethnicityInput" oninput="applyFilters()">
+</div>
+            <div class="filter-item">
+                <label><input type="checkbox" id="heightCmFilter" onchange="applyFilters()"> Height (cm):</label>
+                <input type="text" id="heightCmInput" oninput="applyFilters()">
+            </div>
+            <div class="filter-item">
+                <label><input type="checkbox" id="buildFilter" onchange="applyFilters()"> Build:</label>
+                <input type="text" id="buildInput" oninput="applyFilters()">
+            </div>
+            <div class="filter-item">
+                <label><input type="checkbox" id="hairFilter" onchange="applyFilters()"> Hair:</label>
+                <input type="text" id="hairInput" oninput="applyFilters()">
+            </div>
+            <div class="filter-item">
+                <label><input type="checkbox" id="eyeColourFilter" onchange="applyFilters()"> Eye Colour:</label>
+                <input type="text" id="eyeColourInput" oninput="applyFilters()">
+            </div>
+        </div>
+        <div class="filter-category">
+            <h3>Identifying Features</h3>
+            <div class="filter-item">
+                <label><input type="checkbox" id="clothingFilter" onchange="applyFilters()"> Clothing:</label>
+                <input type="text" id="clothingInput" oninput="applyFilters()">
+            </div>
+            <div class="filter-item">
+                <label><input type="checkbox" id="jewelleryFilter" onchange="applyFilters()"> Jewellery:</label>
+                <input type="text" id="jewelleryInput" oninput="applyFilters()">
+            </div>
+            <div class="filter-item">
+                <label><input type="checkbox" id="possessionsFilter" onchange="applyFilters()"> Possessions:</label>
+                <input type="text" id="possessionsInput" oninput="applyFilters()">
+            </div>
+            <div class="filter-item">
+                <label><input type="checkbox" id="distinguishingFeaturesFilter" onchange="applyFilters()"> Distinguishing Features:</label>
+                <input type="text" id="distinguishingFeaturesInput" oninput="applyFilters()">
+            </div>
+        </div>
+    </div>
+    <div id="databaseContent"></div>
+</div>
+
+<div class="toggle-switch">
+    <input type="checkbox" id="theme-toggle">
+    <label for="theme-toggle" class="toggle-switch-label">
+        <span class="toggle-switch-slider"></span>
+    </label>
+</div>
+
+<script>
+    // Function to fetch data from the database.json file
+    async function fetchData() {
+        try {
+            const response = await fetch('database.json');
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            return null;
+        }
+    }
+
+    async function renderData(data) {
+    const databaseContent = document.getElementById('databaseContent');
+
+    if (!data || data.length === 0) {
+        databaseContent.innerHTML = '<p>No matching cases found.</p>';
+        return;
+    }
+
+    let allCasesHtml = '';
+
+    data.forEach(caseEntry => {
+        try {
+            const caseHtml = `
+                <div class="case-info">
+                    <h2>Case Information</h2>
+                    <p>Case URL: <a href="${caseEntry.Url}" target="_blank">${caseEntry.Url}</a></p>
+                    <p>Case Number: ${caseEntry.CaseNumber}</p>
+                </div>
+                <div class="case-info">
+                    <div class="case-data">
+                        <!-- Case Data Sections -->
+                    </div>
+                </div>
+            `;
+
+            // Filter out images with src set to # or null
+            const filteredCaseImages = caseEntry.CaseData.CaseImages.filter(imageUrl => imageUrl && imageUrl !== '#');
+            const filteredSensitiveImages = caseEntry.CaseData.SensitiveImages.filter(imageUrl => imageUrl && imageUrl !== '#');
+
+            // Generate HTML for case data sections
+            let caseDataSectionsHtml = `
+                <div class="case-data-section">
+                    <h2>Case Data</h2>
+                    <div class="case-data-info">
+                        ${Object.entries(caseEntry.CaseData)
+                            .filter(([key]) => !['CaseImages', 'SensitiveImages', 'CombinedMapImage'].includes(key))
+                            .map(([key, value]) => `<p><strong>${key}:</strong> ${value}</p>`).join('')}
+                    </div>
+                </div>
+                <div class="case-data-section">
+                    <h3>Combined Map Image</h3>
+                    <img src="${caseEntry.CaseData.CombinedMapImage}" alt="Combined Map Image">
+                </div>
+            `;
+
+            // Check if there are case images to display
+            if (filteredCaseImages.length > 0) {
+                caseDataSectionsHtml += `
+                    <div class="case-data-section">
+                        <h3>Case Images</h3>
+                        <div class="case-images">
+                            ${filteredCaseImages.map(imageUrl => `<img src="${imageUrl}" alt="Case Image">`).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Check if there are sensitive images to display
+            if (filteredSensitiveImages.length > 0) {
+                caseDataSectionsHtml += `
+                    <div class="case-data-section">
+                        <h3>Sensitive Images</h3>
+                        <div class="sensitive-images">
+                            ${filteredSensitiveImages.map(imageUrl => `<img src="${imageUrl}" alt="Sensitive Image">`).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Append case HTML with case data sections
+            allCasesHtml += caseHtml.replace("<!-- Case Data Sections -->", caseDataSectionsHtml);
+        } catch (error) {
+            console.error('Error rendering case:', error);
+        }
+    });
+
+    databaseContent.innerHTML = allCasesHtml;
+    // Show the case data sections
+    document.querySelectorAll('.case-data-section').forEach(section => {
+        section.style.display = 'block';
+    });
+    // Call the function to toggle blur effect
+    toggleBlur();
+}
+
+async function applyFilters() {
+    const data = await fetchData();
+
+    if (!data) {
+        return;
+    }
+
+    const searchInput = document.getElementById('searchInput').value.trim().toLowerCase();
+    const exactMatchCheckbox = document.getElementById('exactMatchCheckbox');
+    const exactMatch = exactMatchCheckbox.checked;
+
+    const filteredCases = data.filter(caseEntry => {
+        try {
+            const caseString = Object.values(caseEntry.CaseData).join(' ').toLowerCase();
+            if (searchInput) {
+                if (!caseString.includes(searchInput)) {
+                    return false;
+                }
+            }
+
+            const filters = [
+                { id: 'caseNumberFilter', key: 'CaseNumber' },
+                { id: 'genderFilter', key: 'Gender' },
+                { id: 'ageRangeFilter', key: 'Age range' },
+                { id: 'ethnicityFilter', key: 'Ethnicity' },
+                { id: 'heightCmFilter', key: 'Height' },
+                { id: 'buildFilter', key: 'Build' },
+                { id: 'dateFoundFilter', key: 'Date found' },
+                { id: 'bodyRemainsFilter', key: 'Body or remains' },
+                { id: 'hairFilter', key: 'Hair' },
+                { id: 'eyeColourFilter', key: 'Eye colour' },
+                { id: 'clothingFilter', key: 'Clothing' },
+                { id: 'jewelleryFilter', key: 'Jewellery' },
+                { id: 'possessionsFilter', key: 'Possessions' },
+                { id: 'distinguishingFeaturesFilter', key: 'Distinguishing features' }
+            ];
+
+            for (const filter of filters) {
+                const filterElement = document.getElementById(filter.id);
+                if (filterElement.checked) {
+                    let inputValue = document.getElementById(filter.id.replace('Filter', 'Input')).value.trim().toLowerCase();
+                    if (inputValue === '') {
+                        continue; // Skip filtering if input value is empty
+                    }
+                    let caseValue;
+                    if (filter.key === 'CaseNumber') {
+                        caseValue = caseEntry.CaseNumber.toLowerCase();
+                    } else {
+                        caseValue = caseEntry.CaseData[filter.key].toLowerCase();
+                    }
+
+                    if (exactMatch && filter.id !== 'searchInput') {
+                        if (caseValue !== inputValue) {
+                            return false;
+                        }
+                    } else {
+                        if (filter.id === 'ageRangeFilter') {
+                            const ageRange = caseValue.split('-').map(value => parseInt(value.trim()));
+                            const age = parseInt(inputValue);
+                            if (isNaN(age)) {
+                                continue;
+                            }
+                            if (age < ageRange[0] || age > ageRange[1]) {
+                                return false;
+                            }
+                        } else {
+                            if (!caseValue.includes(inputValue)) {
+                                const inputWords = inputValue.split(' ').filter(word => word.trim() !== '');
+                                const caseWords = caseValue.split(/\s*\b\s*/).filter(word => word.trim() !== '');
+
+                                let matches = 0;
+                                for (const word of inputWords) {
+                                    if (caseWords.includes(word)) {
+                                        matches++;
+                                    }
+                                }
+
+                                if (matches !== inputWords.length) {
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('Error applying filters:', error);
+            return false;
+        }
+
+        return true;
+    });
+
+    renderData(filteredCases);
+}
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeStyle = document.getElementById('theme-style');
+
+        // Function to toggle between light and dark mode
+        function toggleTheme() {
+            if (themeToggle.checked) {
+                themeStyle.href = 'dark.css';
+            } else {
+                themeStyle.href = 'light.css';
+            }
+        }
+
+        // Add event listener to toggle switch
+        themeToggle.addEventListener('change', toggleTheme);
+
+        // Check user's preferred color scheme
+        const prefersDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (prefersDarkMode) {
+            themeToggle.checked = true;
+            toggleTheme();
+        }
+    });
+    
+    // Function to toggle blur effect on sensitive images
+    function toggleBlur() {
+        const sensitiveImages = document.querySelectorAll('.sensitive-images img');
+
+        sensitiveImages.forEach(image => {
+            let isBlurred = true;
+
+            image.addEventListener('click', () => {
+                if (isBlurred) {
+                    image.style.filter = 'none'; // Remove blur effect
+                } else {
+                    image.style.filter = 'blur(20px)'; // Apply blur effect
+                }
+                isBlurred = !isBlurred; // Toggle the blur state
+            });
+        });
+    }
+
+    // Call applyFilters function when the page loads
+    window.onload = applyFilters;
+</script>
+
+</body>
+</html>
