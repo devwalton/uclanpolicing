@@ -1,6 +1,6 @@
 <?php
 // Clear the scrape.log file
-$logFile = fopen('scrape.log', 'w');
+$logFile = fopen('https://uclanpolicing.vercel.app/scrape.log', 'w');
 if ($logFile === false) {
     die('Error: Unable to open or create scrape.log file.');
 }
@@ -17,8 +17,8 @@ $currentYear = date('y');
 
 // Load existing database or create new
 $database = [];
-if (file_exists('database.json')) {
-    $databaseContent = file_get_contents('database.json');
+if (file_exists('https://uclanpolicing.vercel.app/database.json')) {
+    $databaseContent = file_get_contents('https://uclanpolicing.vercel.app/database.json');
     if ($databaseContent !== false) {
         $database = json_decode($databaseContent, true);
     }
